@@ -1,20 +1,13 @@
-## Context
+# Vendo as canções
 
-This corpus was created during a research at the Institute of Computing, from University of Campinas under supervision of Professors Ariadne Carvalho and Norton Roman. It consists on a crowd-sourcing experiment for annotating emotions on tweets related to the Brazilian stock market.
-Content
+Este repo tem o código da semente de uma análise características de áudio e de metadados de músicas do catálogo do spotify. Dá por exemplo para checar quais os albuns mais tristes de  Roberto Carlos ou comparar o padrão de popularidade ano-a-ano das músicas de Aviões do Forró, Elis Regina ou Gil Bala. 
 
-We made available the following output from our annotation system:
+## Organização
 
-tweets_annotators.csv: A list of all annotators and their profiles (without personal information)
+Tem exemplos bem iniciais de análises possíveis em `reports/`, com dados já coletados e salvos em `data/`. Os atributos de cada faixa (track) são descritos [na documentação da API do Spotify](https://beta.developer.spotify.com/documentation/web-api/reference/object-model/#audio-features-object). 
 
-tweets.csv: A list of all tweets available for annotation
+Os dados são acessados via o pacote [spotifyr](https://github.com/charlie86/spotifyr), um wrapper da API do Spotify. Tem código mostrando como os dados em `data/` foram coletados e como coletar dados de playlists em `code/`. 
 
-tweets_annotations.csv: All the individual annotations with emotions, also indicating the annotator and the tweet id and the annotation date and time
+## Importante 
 
-tweets_stocks.csv: The final corpus with annotations after considering the majority of annotators, containing only tweets with at least 3 annotations
-
-tweets_stocks-full_agreement.csv: A tweets_stocks.csv subset containing only tweets annotated by at least 3 people, in which all of them agreed upon the emotions or only one marked as "don't know"
-
-## What is it?
-
-This repository containg a data analysis example into `reports/` for the ad1-lab evaluation at UFCG
+Para usar a API você precisará logar e pegar um id e segredo para seu código [na página de desenvolvedores do Spotify](https://developer.spotify.com/my-applications/#!/applications). É rapidinho. Pegue lá e edite `code/chaves-do-spotify.csv`. Mas perceba que esse arquivo (e suas chaves) não devem ir pro github, e por isso estão no `.gitignode`.
