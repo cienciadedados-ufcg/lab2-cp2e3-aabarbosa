@@ -10,56 +10,65 @@ library(here)
 theme_set(theme_minimal())
 ```
 
+
 ```{r}
-playlist = read_csv("../data/playlists_nazareno.csv")
+file = read_csv("../data/playlists_nazareno.csv")
 ```
 
-Qual a música mais triste de cada artista em cada ano? 
-
+Quais as 10 playlists mais ouvidas? 
 ```{r}
 
-top10 <- merged %>% 
-        group_by(track_name) %>%
-        summarise(artist_name = head(artist_name,1),
-                  # cuz a song can have multiple artist
-                  plays = n_distinct(played_at)) %>%
-        arrange(-plays) %>%
-        head(10)
-top10
+ top_ten_playlists <-file %>% 
+        group_by(playlist_name) %>% 
+        summarise(times = n()) %>% 
+        top_n(10) %>%
+        ungroup() %>%
+        arrange(-times) %>% 
+    ggplot(aes(x=playlist_name, y = times)) + 
+    geom_bar(stat = "identity") + 
+    coord_flip() + 
+    xlab("Nome da playlist") + 
+    ylab("Número de registros")
 
-forró %>% 
-    group_by(artist, album_release_date) %>% 
-    summarise(humor_do_ano = min(valence)) %>% 
-    ggplot(aes(x = album_release_date, 
-               group = artist,
-               color = artist,
-               y = humor_do_ano)) + 
-    geom_line() + 
-    geom_point()
+top_ten_playlists
 ```
 
+Quais as músicas mais ouvidas considerando apenas as faixas nomeadas? 
 ```{r}
-p = forró %>% 
-    arrange(album_release_date) %>% 
-    ggplot(aes(x = energy, 
-               group = artist,
-               color = artist,
-               label = track_name,
-               y = valence)) + 
-    geom_point(size = .8, alpha = .8) 
+top_hits <-file %>% 
+        group_by(track_name) %>% 
+        na.omit() %>%
+        summarise(times = n()) %>% 
+        top_n(10) %>% 
+    ggplot(aes(x=track_name, y = times)) + 
+    geom_count() + 
+    coord_flip() + 
+    xlab("Nome da faixa") + 
+    ylab("Número de registros")
 
-plotly::ggplotly(p)
+top_hits
 ```
+
+
 ```{r}
-forró %>% 
-    arrange(album_release_date) %>% 
-    ggplot(aes(x = energy, 
-               group = artist,
-               label = track_name,
-               y = valence)) + 
-    stat_density2d(aes(fill=..level..), geom="polygon") +
-    scale_fill_viridis() + 
-    # geom_density2d() + # ou o stat_density ou geom_density
-    facet_wrap(~artist)
+1- Quais as 10 playlists mais ouvidas?
+
+2- Quais as músicas mais ouvidas considerando apenas as faixas nomeadas?
+
+3- Quais album Nazareno Andrade ouve com mais frequência?
+
+4- Que músicas, entre as faixas nomeadas, são mais "dançáveis"?
+
+5- Que tipo de música Nazareno Andrade costuma ouvir? 
+
+6- O que é possível identificar a partir dessas evidências (na questão 5)?
+
+7- As faixas longas/curtas diferenciam-se (entre si ou em conjunto)?
+
+8- A popularidade das músicas influencia no seu estilo? 
+
+9- Quais seus artistas preferidos? 
+
+10- É possivel identificar algum padrão instrumental nas músicas mais tocadas?
 ```
 
